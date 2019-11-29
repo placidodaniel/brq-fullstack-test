@@ -1,3 +1,3 @@
-const a = 2
+import app from './app'
 
-console.log(2)
+app.listen(3000)
