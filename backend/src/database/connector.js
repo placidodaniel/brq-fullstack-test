@@ -10,16 +10,4 @@ module.exports = () => {
         useCreateIndex: true,
         useFindAndModify: false
     })
-
-    mongoose.connection.on('connected', () => {
-        console.log('Connection with MongoDB was established!')
-    })
-
-    mongoose.connection.on('disconnected', () => {
-        console.log('Database: Disconnected')
-    })
-
-    mongoose.connection.on('error', () => {
-        console.log('Database: Error')
-    })
 }
