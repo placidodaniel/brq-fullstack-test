@@ -30,7 +30,6 @@ module.exports = {
       // Prevents toUpperCase() of undefined
       type = type ? type.toUpperCase() : ""
       chassisId.series = chassisId.series.trim()
-      chassisId.number = chassisId.number.trim()
       color = color.trim()
 
       const passengers = getNumberOfPassengers(type)
@@ -55,7 +54,6 @@ module.exports = {
       }
 
       chassisId.series = chassisId.series.trim()
-      chassisId.number = chassisId.number.trim()
       await Vehicle.findOne({ chassisId }, (err, vehicle) => {
       if (err) {
          return res.status(500)
