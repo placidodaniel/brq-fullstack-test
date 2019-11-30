@@ -43,6 +43,11 @@ $_documentContainer.innerHTML = `<dom-module id="shared-styles">
         transition: .5s all;
       }
 
+      .card-header .btn-no-icon {
+        display: block !important;
+        text-align: center;
+      }
+
       .card-header .card-description {
         display: flex;
         flex-direction: column;
@@ -57,13 +62,20 @@ $_documentContainer.innerHTML = `<dom-module id="shared-styles">
         margin: 0;
       }
 
+      .actions {
+        display: flex;
+      }
+
+      .actions a:first-child {
+        margin: 0 20px;
+      }
+
       .actions .btn {
         display: flex;
         justify-content: center;
         align-items: center;
         width: 100px;
         height: 30px;
-        border-radius: 5px;
         border: 1px solid #ddd;
       }
 
@@ -74,6 +86,11 @@ $_documentContainer.innerHTML = `<dom-module id="shared-styles">
       .btn-cancel {
         background-color: #eee !important;
         color: #333 !important;
+      }
+
+      .btn-delete {
+        background-color: #e62727 !important;
+        color: white !important;
       }
 
       .card-header .btn .btn-icon {
@@ -96,6 +113,58 @@ $_documentContainer.innerHTML = `<dom-module id="shared-styles">
         background: #ddd;
         font-size: 30px;
         line-height: 64px;
+      }
+
+      .box {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 5px;
+        margin: 20px 50px;
+      }
+
+      .box p {
+        margin: 0;
+      }
+
+      .error {
+        background-color: #f58484;
+        border: 1px solid #ff4d4d;
+        color: white;
+      }
+
+      .success {
+        background-color: #b2ff94;
+        border: 1px solid #65ff29;
+        color: #333;
+      }
+
+      .neutral {
+        border: 1px solid black;
+        color: #333;
+      }
+
+      .form {
+        margin: 20px 0;
+        display: grid;
+        grid-gap: 20px;
+      }
+
+      .form .chassisId {
+        background-color: #e9e9f3;
+        border-radius: 5px;
+      }
+
+      .form .chassisId p {
+        position: absolute;
+        transform: translateY(-18px);
+      }
+
+      .form .fields {
+        padding: 10px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 20px;
       }
 
       h1 {

@@ -8,7 +8,6 @@ const VehicleSchema = mongoose.Schema({
        number: Number
      },
      unique: true,
-     required: 'You should inform a chassis series and number!',
      index: true
    },
    type: {

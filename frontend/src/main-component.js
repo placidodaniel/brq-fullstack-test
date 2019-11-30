@@ -185,6 +185,10 @@ class MainComponent extends PolymerElement {
     ];
   }
 
+  getPathList() {
+    return ['list', 'search', 'insert', 'edit', 'delete']
+  }
+
   _routePageChanged(page) {
      // Show the corresponding page according to the route.
      //
@@ -192,7 +196,7 @@ class MainComponent extends PolymerElement {
      // Show 'list' in that case. And if the page doesn't exist, show 'view404'.
     if (!page) {
       this.page = 'list';
-    } else if (['list', 'search', 'insert', 'edit', 'delete'].indexOf(page) !== -1) {
+    } else if (this.getPathList().indexOf(page) !== -1) {
       if (page === 'list') {
           this.$.getListOfVehicles.generateRequest()
       }
@@ -213,25 +217,11 @@ class MainComponent extends PolymerElement {
     //
     // Note: `polymer build` doesn't like string concatenation in the import
     // statement, so break it up.
-    switch (page) {
-      case 'list':
-        import('./pages/list-component.js');
-        break;
-      case 'search':
-        import('./pages/search-component.js');
-        break;
-      case 'insert':
-        import('./pages/insert-component.js')
-      case 'edit':
-        import('./pages/edit-component.js')
-      case 'delete':
-        import('./pages/delete-component.js')
-      case 'view404':
-        import('./pages/404-component.js');
-        break;
-    }
+    this.getPathList().includes(page) ?
+      import(`./pages/${page}-component.js`) : import('./pages/404-component.js')
   }
 
+  // Handle the HTTP call to get the list of vehicles
   handleResponse(event) {
     this.response = event.detail.response
   }

@@ -1,6 +1,7 @@
 const app = require('../app')
 const request = require('supertest')
 const chai = require('chai')
+const mongoose = require('mongoose')
 
 chai.should()
 
@@ -45,7 +46,102 @@ describe("Vehicle API tests", function () {
 				res.body.should.be.equal("The given ChassisID already exists on database")
 		})
 
-		it ("should find a vehicle by chassiId and display all informations", async function () {
+		it ("should not insert a vehicle without Chassis Series", async function () {
+			const badPaylod = { ...payload, chassisId: { number: 123456 } }
+
+			const res = await request(app)
+				.post('/vehicles')
+				.send(badPaylod)
+				.set('Accept', 'application/json')
+
+				const { error } = res.body
+				res.status.should.be.equal(422)
+				error.should.be.equal("You should inform a Series or Number!")
+		})
+
+		it ("should not insert a vehicle without Chassis Number", async function () {
+			const badPaylod = { ...payload, chassisId: { series: "AAA-BBB-CCC" }}
+
+			const res = await request(app)
+				.post('/vehicles')
+				.send(badPaylod)
+				.set('Accept', 'application/json')
+
+				const { error } = res.body
+
+				res.status.should.be.equal(422)
+				error.should.be.equal("You should inform a Series or Number!")
+		})
+
+		it ("should not insert a vehicle with type different than Car, Bus or Truck", async function () {
+			const badPaylod = {
+				...payload,
+				chassisId: { series: "AAA-BBB-CCC", number: 123456 },
+				type: 'Byke'
+			}
+
+			const res = await request(app)
+				.post('/vehicles')
+				.send(badPaylod)
+				.set('Accept', 'application/json')
+
+				res.status.should.be.equal(422)
+		})
+
+		it ("Insert a CAR should always fill the passenger field with 4", async function () {
+			const newPaylod = {
+				...payload,
+				chassisId: { series: "type1", number: 123456 },
+				type: 'Car'
+			}
+
+			const res = await request(app)
+				.post('/vehicles')
+				.send(newPaylod)
+				.set('Accept', 'application/json')
+
+				const { passengers } = res.body
+
+				res.status.should.be.equal(200)
+				passengers.should.be.equal(4)
+		})
+		it ("Insert a TRUCK should always fill the passenger field with 1", async function () {
+			const newPaylod = {
+				...payload,
+				chassisId: { series: "type2", number: 456789 },
+				type: 'Truck'
+			}
+
+			const res = await request(app)
+				.post('/vehicles')
+				.send(newPaylod)
+				.set('Accept', 'application/json')
+
+				const { passengers } = res.body
+
+				res.status.should.be.equal(200)
+				passengers.should.be.equal(1)
+		})
+
+		it ("Insert a BUS should always fill the passenger field with 42", async function () {
+			const newPaylod = {
+				...payload,
+				chassisId: { series: "type3", number: 541236 },
+				type: 'Bus'
+			}
+
+			const res = await request(app)
+				.post('/vehicles')
+				.send(newPaylod)
+				.set('Accept', 'application/json')
+
+				const { passengers } = res.body
+
+				res.status.should.be.equal(200)
+				passengers.should.be.equal(42)
+		})
+
+		it ("should find a vehicle by chassisId and display all informations", async function () {
 			const { chassisId } = payload
 
 			const res = await request(app)
@@ -106,4 +202,8 @@ describe("Vehicle API tests", function () {
 		})
 	})
 
+	// Resets the database after all Tests
+	after(function (done) {
+		mongoose.connection.db.dropDatabase(done)
+	})
 })

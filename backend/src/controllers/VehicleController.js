@@ -24,7 +24,13 @@ module.exports = {
    async store (req, res) {
       let { chassisId, type, color } = req.body
 
-      type = type.toUpperCase()
+      if (!chassisId.series || !chassisId.number) {
+         return res.status(422).send({ error: "You should inform a Series or Number!" })
+      }
+
+      // Prevents toUpperCase() of undefined
+      type = type ? type.toUpperCase() : ""
+
       const passengers = getNumberOfPassengers(type)
       const vehicle = { chassisId, type, passengers, color }
 
@@ -41,13 +47,18 @@ module.exports = {
  // Find a vehicle by ChassisId
    async findByChassisId (req, res) {
       const { chassisId } = req.body
+
+      if (!chassisId.series || !chassisId.number) {
+         return res.status(422).json({ error: "You should inform a Series or Number!" })
+      }
+
       await Vehicle.findOne({ chassisId }, (err, vehicle) => {
       if (err) {
          return res.status(500)
       }
 
       if (!vehicle) {
-         return res.status(204)
+         return res.status(200).json({ message: "No vehicle found!" })
       }
 
       return res.status(200).json(vehicle)

@@ -65,6 +65,12 @@ class ListVehiclesComponent extends PolymerElement {
         .row span {
           justify-self: center;
         }
+
+        .message {
+          text-align: center;
+          margin: 20px 0;
+          font-style: italic;
+        }
       </style>
       <div class="card">
         <div class="card-header">
@@ -77,24 +83,29 @@ class ListVehiclesComponent extends PolymerElement {
             <span class='btn-text'> New Vehicle </span>
           </a>
         </div>
-        <div class="table">
-          <div class="header">
-            <span> ChassisID </span>
-            <span> Type </span>
-            <span> Passengers </span>
-            <span> Color </span>
+        <template is="dom-if" if="{{!response}}">
+          <p class="message"> No recordings to display! </p>
+        </template>
+        <template is="dom-if" if="{{response}}">
+          <div class="table">
+            <div class="header">
+              <span> ChassisID </span>
+              <span> Type </span>
+              <span> Passengers </span>
+              <span> Color </span>
+            </div>
+            <dom-repeat items="[[response]]">
+              <template>
+                <div class="row">
+                  <span> {{item.chassisId.series}} {{item.chassisId.number}} </span>
+                  <span> {{item.type}} </span>
+                  <span> {{item.passengers}} </span>
+                  <span> {{item.color}} </span>
+                </div>
+              </template>
+            </dom-repeat>
           </div>
-          <dom-repeat items="[[response]]">
-            <template>
-              <div class="row">
-                <span> {{item.chassisId.series}} {{item.chassisId.number}} </span>
-                <span> {{item.type}} </span>
-                <span> {{item.passengers}} </span>
-                <span> {{item.color}} </span>
-              </div>
-            </template>
-          </dom-repeat>
-        </div>
+        </template>
       </div>`
   }
 }
