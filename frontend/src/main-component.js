@@ -21,7 +21,9 @@ import '@polymer/app-route/app-route.js';
 import '@polymer/iron-pages/iron-pages.js';
 import '@polymer/iron-selector/iron-selector.js';
 import '@polymer/paper-icon-button/paper-icon-button.js';
-import './my-icons.js';
+import './page-icons.js';
+
+import '@polymer/iron-ajax/iron-ajax.js'
 
 // Gesture events like tap and track generated from touch will not be
 // preventable, allowing for better scrolling performance.
@@ -31,19 +33,53 @@ setPassiveTouchGestures(true);
 // in `index.html`.
 setRootPath(MyAppGlobals.rootPath);
 
-class MyApp extends PolymerElement {
+class MainComponent extends PolymerElement {
   static get template() {
     return html`
       <style>
         :host {
-          --app-primary-color: #4285f4;
+          --app-primary-color: #777;
           --app-secondary-color: black;
+          --app-drawer-width: 300px;
+          --app-drawer-scrim-background: rgba(0, 0, 0, 0.5);
 
           display: block;
         }
 
+
         app-drawer-layout:not([narrow]) [drawer-toggle] {
           display: none;
+        }
+
+        app-drawer {
+          margin: 10px 0;
+        }
+
+        app-drawer app-toolbar {
+          height: 15%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+
+        app-drawer app-toolbar img {
+          height: 70px;
+          width: 70px;
+        }
+
+        .drawer-logo * {
+          margin: 0;
+          margin-left: 15px;
+        }
+
+        .drawer-logo span {
+          opacity: 0.5;
+        }
+
+        .drawer-break {
+          margin: 0 20px;
+          text-align: center;
+          opacity: .2;
         }
 
         app-header {
@@ -57,6 +93,7 @@ class MyApp extends PolymerElement {
 
         .drawer-list {
           margin: 0 20px;
+          background
         }
 
         .drawer-list a {
@@ -82,32 +119,49 @@ class MyApp extends PolymerElement {
       <app-drawer-layout fullbleed="" narrow="{{narrow}}">
         <!-- Drawer content -->
         <app-drawer id="drawer" slot="drawer" swipe-open="[[narrow]]">
-          <app-toolbar>Menu</app-toolbar>
+          <app-toolbar>
+            <img src='images/favicon.ico' alt='Volvo Logo'>
+            <div class='drawer-logo'>
+              <h3> Fleet </h3>
+              <span> Management </span>
+            </div>
+          </app-toolbar>
+          <hr class="drawer-break">
           <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
-            <a name="view1" href="[[rootPath]]view1">View One</a>
-            <a name="view2" href="[[rootPath]]view2">View Two</a>
-            <a name="view3" href="[[rootPath]]view3">View Three</a>
+            <a name="list" href="[[rootPath]]list"> LIST </a>
+            <a name="list" href="[[rootPath]]insert"> INSERT </a>
+            <a name="list" href="[[rootPath]]edit"> EDIT </a>
+            <a name="list" href="[[rootPath]]delete"> DELETE </a>
+            <a name="search" href="[[rootPath]]search"> SEARCH </a>
           </iron-selector>
         </app-drawer>
 
         <!-- Main content -->
         <app-header-layout has-scrolling-region="">
-
           <app-header slot="header" condenses="" reveals="" effects="waterfall">
-            <app-toolbar>
               <paper-icon-button icon="my-icons:menu" drawer-toggle=""></paper-icon-button>
-              <div main-title="">My App</div>
-            </app-toolbar>
           </app-header>
-
           <iron-pages selected="[[page]]" attr-for-selected="name" role="main">
-            <my-view1 name="view1"></my-view1>
-            <my-view2 name="view2"></my-view2>
-            <my-view3 name="view3"></my-view3>
+            <list-component name="list" response="{{response}}"></list-component>
+            <search-component name="search"></search-component>
+            <insert-component name="insert"></insert-component>
+            <edit-component name="edit"></edit-component>
+            <delete-component name="delete"></delete-component>
             <my-view404 name="view404"></my-view404>
           </iron-pages>
         </app-header-layout>
       </app-drawer-layout>
+
+      <!-- HTTP GET: Get vehicles list and send to <list-component> -->
+      <iron-ajax
+        auto
+        id="getListOfVehicles"
+        url="http://localhost:3000/vehicles"
+        methtod="get"
+        last-response="{{response}}"
+        handle-as="json"
+        on-response="handleResponse">
+      </iron-ajax>
     `;
   }
 
@@ -119,7 +173,9 @@ class MyApp extends PolymerElement {
         observer: '_pageChanged'
       },
       routeData: Object,
-      subroute: Object
+      subroute: Object,
+      response: Array,
+      firstRequest: Boolean
     };
   }
 
@@ -133,12 +189,16 @@ class MyApp extends PolymerElement {
      // Show the corresponding page according to the route.
      //
      // If no page was found in the route data, page will be an empty string.
-     // Show 'view1' in that case. And if the page doesn't exist, show 'view404'.
+     // Show 'list' in that case. And if the page doesn't exist, show 'view404'.
     if (!page) {
-      this.page = 'view1';
-    } else if (['view1', 'view2', 'view3'].indexOf(page) !== -1) {
+      this.page = 'list';
+    } else if (['list', 'search', 'insert', 'edit', 'delete'].indexOf(page) !== -1) {
+      if (page === 'list') {
+          this.$.getListOfVehicles.generateRequest()
+      }
       this.page = page;
-    } else {
+    }
+    else {
       this.page = 'view404';
     }
 
@@ -154,20 +214,27 @@ class MyApp extends PolymerElement {
     // Note: `polymer build` doesn't like string concatenation in the import
     // statement, so break it up.
     switch (page) {
-      case 'view1':
-        import('./my-view1.js');
+      case 'list':
+        import('./pages/list-component.js');
         break;
-      case 'view2':
-        import('./my-view2.js');
+      case 'search':
+        import('./pages/search-component.js');
         break;
-      case 'view3':
-        import('./my-view3.js');
-        break;
+      case 'insert':
+        import('./pages/insert-component.js')
+      case 'edit':
+        import('./pages/edit-component.js')
+      case 'delete':
+        import('./pages/delete-component.js')
       case 'view404':
-        import('./my-view404.js');
+        import('./pages/404-component.js');
         break;
     }
   }
+
+  handleResponse(event) {
+    this.response = event.detail.response
+  }
 }
 
-window.customElements.define('my-app', MyApp);
+window.customElements.define('main-component', MainComponent);

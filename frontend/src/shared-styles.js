@@ -15,12 +15,75 @@ $_documentContainer.innerHTML = `<dom-module id="shared-styles">
   <template>
     <style>
       .card {
-        margin: 24px;
+        margin: 10px;
         padding: 16px;
         color: #757575;
         border-radius: 5px;
         background-color: #fff;
         box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+      }
+
+      .card-header {
+        margin: 0 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .card-header .btn {
+        display: grid;
+        grid-template-columns: 30px auto;
+        align-items: center;
+        background-color: #28278d;
+        color: white;
+        width: 150px;
+        font-weight: bold;
+        text-decoration: none;
+        cursor: pointer;
+        transition: .5s all;
+      }
+
+      .card-header .card-description {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .card-header .card-description span {
+        margin-top: -5px;
+        font-size: .8em;
+      }
+
+      .card-header .card-description h1 {
+        margin: 0;
+      }
+
+      .actions .btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100px;
+        height: 30px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+      }
+
+      .card-header .btn:hover {
+        background-color: #0f0e52;
+      }
+
+      .btn-cancel {
+        background-color: #eee !important;
+        color: #333 !important;
+      }
+
+      .card-header .btn .btn-icon {
+        justify-self: center;
+        font-size: 1.3em;
+        margin-left: 10px;
+      }
+
+      .card-header .btn .btn-text {
+        justify-self: center;
       }
 
       .circle {
