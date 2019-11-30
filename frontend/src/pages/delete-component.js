@@ -87,6 +87,8 @@ class DeleteVehicleComponent extends PolymerElement {
     this.$.deleteVehicleById.generateRequest()
     this.hidden = true
     this.hasResponse = false
+    this.formData = { chassisId: {} }
+    this.response = {}
   }
 
   static get template() {
@@ -218,11 +220,11 @@ class DeleteVehicleComponent extends PolymerElement {
               <div>
                 <span class='text-confirm'> Are you sure you want to delete this vehicle? </span>
                 <div class='actions'>
-                  <a class='btn btn-cancel' href='/list'>
-                    <span class='btn-text'> Cancel </span>
-                  </a>
                   <a class='btn btn-delete' on-click='_confirmDelete'>
                     <span class='btn-text'> Confirm </span>
+                  </a>
+                  <a class='btn btn-cancel' href='/list'>
+                    <span class='btn-text'> Cancel </span>
                   </a>
                 </div>
               </div>

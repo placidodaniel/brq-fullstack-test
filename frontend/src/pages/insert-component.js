@@ -2,6 +2,9 @@ import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import '@polymer/paper-input/paper-input.js';
 import '@polymer/iron-input/iron-input.js';
 import '@polymer/iron-ajax/iron-ajax.js'
+import '@polymer/paper-dropdown-menu/paper-dropdown-menu.js';
+import '@polymer/paper-item/paper-item.js';
+import '@polymer/paper-listbox/paper-listbox.js';
 import '../shared-styles.js';
 
 class InsertNewVehicleComponent extends PolymerElement {
@@ -66,6 +69,10 @@ class InsertNewVehicleComponent extends PolymerElement {
           padding: 10px;
           margin: 0 10px;
         }
+
+        paper-dropdown-menu {
+          width: 100%;
+        }
       </style>
 
       <iron-ajax
@@ -118,7 +125,13 @@ class InsertNewVehicleComponent extends PolymerElement {
           </div>
           <div class='fields'>
             <iron-input slot='input' bind-value='{{formData.type}}'>
-              <paper-input id='type' type='text' value='{{formData.type}}' placeholder='Vehicle Type'>
+              <paper-dropdown-menu label="Type" id='color' value='{{formData.type}}'>
+                <paper-listbox slot="dropdown-content" class="dropdown-content">
+                  <paper-item value="CAR"> CAR </paper-item>
+                  <paper-item value="TRUCK"> TRUCK </paper-item>
+                  <paper-item value="BUS"> BUS </paper-item>
+                </paper-listbox>
+              </paper-dropdown-menu>
             </iron-input>
             <iron-input slot='input' bind-value='{{formData.color}}'>
               <paper-input id='color' type='text' value='{{formData.color}}' placeholder='Color'>

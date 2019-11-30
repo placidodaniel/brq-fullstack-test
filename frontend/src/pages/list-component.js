@@ -21,8 +21,16 @@ class ListVehiclesComponent extends PolymerElement {
     }
   }
 
-  _openDialog() {
-    this.$.modal.open()
+  isEmpty(arr) {
+    console.log(arr)
+    if (!arr)
+      return false
+
+    if (arr.length === 0) {
+      return true
+    }
+
+    return false
   }
 
   static get template() {
@@ -83,9 +91,6 @@ class ListVehiclesComponent extends PolymerElement {
             <span class='btn-text'> New Vehicle </span>
           </a>
         </div>
-        <template is="dom-if" if="{{!response}}">
-          <p class="message"> No recordings to display! </p>
-        </template>
         <template is="dom-if" if="{{response}}">
           <div class="table">
             <div class="header">
@@ -94,10 +99,13 @@ class ListVehiclesComponent extends PolymerElement {
               <span> Passengers </span>
               <span> Color </span>
             </div>
+            <template is="dom-if" if="{{isEmpty(response)}}">
+              <p class="message"> No recordings to display! </p>
+            </template>
             <dom-repeat items="[[response]]">
               <template>
                 <div class="row">
-                  <span> {{item.chassisId.series}} {{item.chassisId.number}} </span>
+                  <span> {{item.chassisId.series}}-{{item.chassisId.number}} </span>
                   <span> {{item.type}} </span>
                   <span> {{item.passengers}} </span>
                   <span> {{item.color}} </span>

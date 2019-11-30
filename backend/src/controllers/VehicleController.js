@@ -1,5 +1,4 @@
 const Vehicle = require('../models/VehicleModel')
-const { ObjectId } = require('mongoose').Types
 
 /**
  * Returns the number of passengers for the vehicle type
@@ -30,6 +29,9 @@ module.exports = {
 
       // Prevents toUpperCase() of undefined
       type = type ? type.toUpperCase() : ""
+      chassisId.series = chassisId.series.trim()
+      chassisId.number = chassisId.number.trim()
+      color = color.trim()
 
       const passengers = getNumberOfPassengers(type)
       const vehicle = { chassisId, type, passengers, color }
@@ -48,10 +50,12 @@ module.exports = {
    async findByChassisId (req, res) {
       const { chassisId } = req.body
 
-      if (!chassisId.series || !chassisId.number) {
+      if (!chassisId || !chassisId.series || !chassisId.number) {
          return res.status(422).json({ error: "You should inform a Series or Number!" })
       }
 
+      chassisId.series = chassisId.series.trim()
+      chassisId.number = chassisId.number.trim()
       await Vehicle.findOne({ chassisId }, (err, vehicle) => {
       if (err) {
          return res.status(500)
