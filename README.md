@@ -86,8 +86,16 @@
     ```
   - Open a browser, and access the web app in *http://localhost:8081*
   
+<div align='center'> 
+  <img src="./images/web_app.png" width="800px"> 
+</div>
+  
 ## Running Unit Tests
   - Use the following command to test the application
   ```
   docker-compose -f docker-compose.test.yml run backend sh -c "yarn test"
   ```
+<div align='center'> 
+  <img src="./images/tests_brq.png" width="600px"> 
+</div>
+  
