@@ -44,11 +44,11 @@ class InsertNewVehicleComponent extends PolymerElement {
     this.response  = event.detail.response
     this.formData = { chassisId: {} } // Reset form
     this.error = ""
-    this.success = `Success! New Vehicle Added to Database: ${this.response.chassisId.series}-${this.response.chassisId.number}!`
+    this.success = `Success! New Vehicle has been added to Database: ${this.response.chassisId.series}-${this.response.chassisId.number}!`
 
     setTimeout(() => {
       this.success = ""
-    }, 2000)
+    }, 6000)
   }
 
   handleHttpError(event) {

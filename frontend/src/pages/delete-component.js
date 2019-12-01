@@ -58,7 +58,7 @@ class DeleteVehicleComponent extends PolymerElement {
   }
 
   handleDeleteResponse() {
-    this.message = "Vehicle was deleted with success!"
+    this.message = "Vehicle has been deleted with success!"
 
     setTimeout(() => {
       this.message = ""

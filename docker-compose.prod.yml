@@ -2,6 +2,6 @@ version: "3"
 
 services:
   backend:
-    command: yarn build && yarn serve
+    command: sh -c "yarn build && yarn serve"
     environment:
       - NODE_ENV=production

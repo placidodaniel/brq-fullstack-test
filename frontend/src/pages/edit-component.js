@@ -51,7 +51,7 @@ class EditVehicleComponent extends PolymerElement {
       color: color
     }
     this.$.updateVehicle.generateRequest()
-    this.success = "Vehicle was updated!"
+    this.success = "Vehicle has been updated!"
 
     setTimeout(() => {
       this.success = ""
