@@ -1,5 +1,5 @@
 {
    "environment": "Production",
-   "database": "mongodb://localhost:27017/production",
+   "database": "mongodb://mongo:27017/production",
    "port": 3000
 }

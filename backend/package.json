@@ -4,10 +4,10 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "build": "babel src -d dist --source-maps",
-    "serve": "cross-env NODE_ENV=production node dist/app.js",
-    "dev": "cross-env NODE_ENV=development nodemon -r ./src/app.js",
-    "test": "cross-env DEBUG=server:debug NODE_ENV=test mocha src/tests/**/*.spec.js --exit"
+    "build": "babel ./src -d dist --source-maps",
+    "serve": "node dist/app.js",
+    "dev": "nodemon -r ./src/app.js",
+    "test": "cross-env DEBUG=server:debug mocha src/tests/**/*.spec.js --exit"
   },
   "devDependencies": {
     "@babel/cli": "^7.7.4",

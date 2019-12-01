@@ -1,0 +1,7 @@
+version: "3"
+
+services:
+  backend:
+    command: yarn build && yarn serve
+    environment:
+      - NODE_ENV=production

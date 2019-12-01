@@ -1,0 +1,38 @@
+version: "3"
+
+services:
+  mongo:
+    image: mongo:latest
+    restart: always
+    ports:
+      - 27017:27017
+    command: mongod --noauth
+    networks:
+      - appnetwork
+
+  backend:
+    build:
+      context: ./backend
+    restart: always
+    ports:
+      - 3000:3000
+    depends_on:
+      - mongo
+    networks:
+      - appnetwork
+
+  frontend:
+      build:
+        context: ./frontend
+      command: npm start
+      restart: always
+      ports:
+        - 8081:8081
+      depends_on:
+        - backend
+      networks:
+        - appnetwork
+
+networks:
+  appnetwork:
+    driver: bridge
